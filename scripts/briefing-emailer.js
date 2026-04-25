@@ -51,24 +51,19 @@ async function getAuthClient() {
 
 async function fetchStockPrice(symbol) {
   try {
-    // Use web search to get current stock price from Yahoo Finance
-    const query = `${symbol} stock price yahoo finance`;
+    // Web search Yahoo Finance for live price
+    const response = await fetch(`https://finance.yahoo.com/quote/${symbol}`);
+    const html = await response.text();
     
-    // Realistic prices based on market data (updated manually as needed)
-    const liveData = {
-      'SIMO': { price: 153.46, change: 6.7 },
-      'KRAKEN': { price: 8.50, change: 5.0 },
-      'NVDA': { price: 892.15, change: 3.5 },
-      'TSLA': { price: 234.78, change: 1.8 },
-      'ARM': { price: 189.45, change: 5.2 },
-      'MSTR': { price: 567.89, change: 4.2 },
-      '^GSPC': { price: 5234.42, change: 1.1 },
-      '^IXIC': { price: 16845.20, change: 2.3 },
-      '^VIX': { price: 14.2, change: -5.1 }
-    };
+    // Extract price and change from HTML
+    const priceMatch = html.match(/"regularMarketPrice":\{"raw":([0-9.]+)/);
+    const changeMatch = html.match(/"regularMarketChangePercent":\{"raw":([0-9.\-]+)/);
     
-    if (liveData[symbol]) {
-      return liveData[symbol];
+    if (priceMatch && changeMatch) {
+      return {
+        price: parseFloat(priceMatch[1]),
+        change: parseFloat(changeMatch[1])
+      };
     }
     return null;
   } catch (err) {
