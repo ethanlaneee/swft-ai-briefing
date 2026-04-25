@@ -245,7 +245,7 @@ ${market.ideas.map(s => `
 <body>
   <div class="container">
     <div class="header">
-      <h1>⚡ Swift Briefing</h1>
+      <h1>⚡ SWFT Briefing</h1>
       <p style="margin: 8px 0 0 0; opacity: 0.9;">Your Daily AI & Market Intel</p>
     </div>
 
@@ -270,8 +270,8 @@ ${market.ideas.map(s => `
     </div>
 
     <div class="footer">
-      <p style="margin: 0;">⚡ Swift AI Assistant | ${today.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}</p>
-      <p style="margin: 5px 0 0 0;">Your competitive edge in AI & Markets</p>
+      <p style="margin: 0;">⚡ SWFT AI Assistant | ${today.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}</p>
+      <p style="margin: 5px 0 0 0;">Built for founders who move fast</p>
     </div>
   </div>
 </body>
