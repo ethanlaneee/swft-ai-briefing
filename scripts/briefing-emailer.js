@@ -3,6 +3,7 @@ const { google } = require('googleapis');
 const nodemailer = require('nodemailer');
 const fs = require('fs');
 const path = require('path');
+const fetch = require('node-fetch');
 
 const TOKEN_PATH = path.join(__dirname, '../config/gmail-token.json');
 const CREDENTIALS_PATH = path.join(__dirname, '../config/google-oauth-credentials.json');
@@ -29,28 +30,66 @@ async function getAuthClient() {
   process.exit(1);
 }
 
+async function fetchStockPrice(symbol) {
+  try {
+    const response = await fetch(`https://query1.finance.yahoo.com/v10/finance/quoteSummary/${symbol}?modules=price`);
+    const data = await response.json();
+    const price = data.quoteSummary.result[0].price;
+    return {
+      price: price.regularMarketPrice.raw,
+      change: price.regularMarketChangePercent.raw
+    };
+  } catch (err) {
+    console.error(`Failed to fetch ${symbol}:`, err.message);
+    return null;
+  }
+}
+
+function getSignal(change) {
+  if (change > 5) return 'SELL';
+  if (change > 2) return 'HOLD';
+  if (change > -2) return 'HOLD';
+  if (change > -5) return 'BUY';
+  return 'STRONG BUY';
+}
+
 async function fetchMarketData() {
   try {
-    const fetch = (await import('node-fetch')).default;
+    // Fetch your holdings
+    const simoData = await fetchStockPrice('SIMO');
+    const pngData = await fetchStockPrice('PNG.VN');
     
-    // Placeholder market data - in production would hit Yahoo Finance API
+    // Fetch indices
+    const sp500 = await fetchStockPrice('^GSPC');
+    const nasdaq = await fetchStockPrice('^IXIC');
+    const vix = await fetchStockPrice('^VIX');
+    
+    // Stock ideas (AI/tech focused)
+    const ideas = ['NVDA', 'TSLA', 'META', 'AVGO', 'MSTR'];
+    const ideaData = [];
+    for (const symbol of ideas) {
+      const data = await fetchStockPrice(symbol);
+      if (data) {
+        ideaData.push({
+          symbol,
+          price: data.price,
+          change: data.change,
+          signal: getSignal(data.change)
+        });
+      }
+    }
+    
     return {
       holdings: {
-        SIMO: { price: 145.32, change: 2.3, signal: 'HOLD' },
-        'PNG.VN': { price: 89.50, change: -1.2, signal: 'BUY' }
+        SIMO: simoData ? { ...simoData, signal: getSignal(simoData.change) } : null,
+        'PNG.VN': pngData ? { ...pngData, signal: getSignal(pngData.change) } : null
       },
       market: {
-        sp500: { price: 5234.42, change: 1.1 },
-        nasdaq: { price: 16845.20, change: 2.3 },
-        vix: { price: 14.2, change: -5.1 }
+        sp500: sp500 || { price: 'N/A', change: 'N/A' },
+        nasdaq: nasdaq || { price: 'N/A', change: 'N/A' },
+        vix: vix || { price: 'N/A', change: 'N/A' }
       },
-      ideas: [
-        { symbol: 'NVDA', reason: 'AI chip leader, strong growth' },
-        { symbol: 'TSLA', reason: 'EV + AI integration momentum' },
-        { symbol: 'META', reason: 'Llama AI expansion + ads recovery' },
-        { symbol: 'AVGO', reason: 'Broadcom chip supply play' },
-        { symbol: 'MSTR', reason: 'Bitcoin proxy, risk/reward' }
-      ]
+      ideas: ideaData
     };
   } catch (err) {
     console.error('Market data fetch failed:', err.message);
@@ -75,7 +114,10 @@ async function generateBriefing() {
   <li><strong>PNG.VN:</strong> $${market.holdings['PNG.VN'].price} (${market.holdings['PNG.VN'].change > 0 ? '+' : ''}${market.holdings['PNG.VN'].change}%) — ${market.holdings['PNG.VN'].signal}</li>
 </ul>
 <p><strong>Market:</strong> S&P 500 ${market.market.sp500.change > 0 ? '+' : ''}${market.market.sp500.change}% | Nasdaq ${market.market.nasdaq.change > 0 ? '+' : ''}${market.market.nasdaq.change}% | VIX ${market.market.vix.change}%</p>
-<p><strong>Watch These:</strong> ${market.ideas.map(s => s.symbol).join(', ')}</p>
+<p><strong>Watch These:</strong></p>
+<ul>
+  ${market.ideas.map(s => `<li><strong>${s.symbol}</strong>: $${s.price.toFixed(2)} (${s.change > 0 ? '+' : ''}${s.change.toFixed(2)}%) — ${s.signal}</li>`).join('')}
+</ul>
     `;
   }
 

@@ -1,0 +1,14 @@
+{
+  "name": "swift-ai-briefing",
+  "version": "1.0.0",
+  "description": "Daily AI briefing for Ethan via Gmail",
+  "main": "scripts/briefing-emailer.js",
+  "scripts": {
+    "briefing": "node scripts/briefing-emailer.js"
+  },
+  "dependencies": {
+    "googleapis": "^171.4.0",
+    "nodemailer": "^8.0.5",
+    "node-fetch": "^2.7.0"
+  }
+}
