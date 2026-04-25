@@ -179,8 +179,8 @@ async function generateBriefing() {
     <br><small>5 shares @ $8.10 avg | Current Value: $${(market.holdings['PNG.VN'].price * 5).toFixed(2)} | <strong style="color: #4CAF50;">Gain: +$${pngGain}</strong></small>
   </li>
 </ul>
-<p style="margin-top: 12px; padding: 8px; background: #e3f2fd; border-radius: 4px; font-size: 13px;">
-  <strong>Portfolio Summary:</strong> You're up <strong style="color: #4CAF50;">$${(parseFloat(simoGain) + parseFloat(pngGain)).toFixed(2)}</strong> total. Both positions profitable. Keep them.
+<p style="margin-top: 12px; padding: 8px; background: #f0fdf4; border-radius: 4px; font-size: 13px; color: #166534;">
+  <strong>Portfolio Summary:</strong> You're up <strong style="color: #16a34a;">$${(parseFloat(simoGain) + parseFloat(pngGain)).toFixed(2)}</strong> total. Both positions profitable. Keep them.
 </p>
 <p><strong>Broad Market:</strong> S&P 500 ${market.market.sp500.change > 0 ? '+' : ''}${market.market.sp500.change.toFixed(2)}% | Nasdaq ${market.market.nasdaq.change > 0 ? '+' : ''}${market.market.nasdaq.change.toFixed(2)}% | VIX ${market.market.vix.change.toFixed(2)}%</p>
 <p><strong>5 Stocks to Watch:</strong></p>
@@ -234,7 +234,7 @@ ${market.ideas.map(s => `
   </p>
 </div>
 
-<p style="margin-top: 15px; padding: 12px; background: #e8f5e9; border-radius: 4px; border-left: 3px solid #4CAF50; font-size: 13px;">
+<p style="margin-top: 15px; padding: 12px; background: #f0fdf4; border-radius: 4px; border-left: 3px solid #16a34a; font-size: 13px; color: #166534;">
   <strong>💡 The Big Picture:</strong> AI models are getting commoditized (cheaper, more available). The winners aren't the companies making the models — they're the companies using AI best in their niche. SWFT's bet: be the best AI assistant for home-services contractors. That's defensible.
 </p>
   `;
@@ -275,11 +275,11 @@ ${market.ideas.map(s => `
 
     ${isMonday ? `
     <div class="section">
-      <h2>📊 Swift Growth Pulse</h2>
-      <div class="metric" style="background: #e8f5e9;">📈 <strong>12</strong> New Signups</div>
-      <div class="metric" style="background: #e3f2fd;">👥 <strong>87</strong> Active Users</div>
-      <div class="metric" style="background: #f3e5f5;">💰 <strong>$4,261</strong> MRR (↑18% MoM)</div>
-      <p style="margin-top: 15px; padding: 12px; background: #fff8e1; border-radius: 4px; border-left: 3px solid #ffc107;">
+      <h2>📊 SWFT Growth Pulse</h2>
+      <div class="metric" style="background: #dcfce7; color: #166534;">📈 <strong>12</strong> New Signups</div>
+      <div class="metric" style="background: #dcfce7; color: #166534;">👥 <strong>87</strong> Active Users</div>
+      <div class="metric" style="background: #dcfce7; color: #166534;">💰 <strong>$4,261</strong> MRR (↑18% MoM)</div>
+      <p style="margin-top: 15px; padding: 12px; background: #f0fdf4; border-radius: 4px; border-left: 3px solid #16a34a; color: #166534;">
         <strong>📌 Focus:</strong> Home-services vertical momentum building. Lead quality improving. Next milestone: 150 active users by end of Q2.
       </p>
     </div>
