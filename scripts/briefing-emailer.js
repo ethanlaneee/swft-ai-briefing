@@ -252,22 +252,23 @@ ${market.ideas.map(s => `
 <html>
 <head>
   <style>
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #333; line-height: 1.6; }
-    .container { max-width: 600px; margin: 0 auto; background: #ffffff; }
-    .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; text-align: center; border-radius: 8px 8px 0 0; }
-    .header h1 { margin: 0; font-size: 28px; }
-    .section { padding: 25px; border-bottom: 1px solid #eee; }
-    .section h2 { margin-top: 0; color: #667eea; font-size: 20px; }
-    .section h3 { color: #555; margin: 15px 0 10px 0; }
-    .card { background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); padding: 15px; border-radius: 6px; margin: 12px 0; border-left: 4px solid #667eea; }
-    .card strong { color: #667eea; }
-    .metric { display: inline-block; background: #f0f4ff; padding: 8px 16px; border-radius: 4px; margin: 5px 5px 5px 0; font-size: 13px; }
-    .buy { color: #4CAF50; font-weight: bold; }
-    .sell { color: #f44336; font-weight: bold; }
-    .hold { color: #ff9800; font-weight: bold; }
-    .footer { padding: 20px 25px; background: #f9f9f9; text-align: center; color: #999; font-size: 12px; border-radius: 0 0 8px 8px; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif; color: #1f2937; line-height: 1.6; background: #f9fafb; }
+    .container { max-width: 640px; margin: 0 auto; background: #ffffff; }
+    .header { background: linear-gradient(135deg, #16a34a 0%, #15803d 100%); color: white; padding: 32px 24px; text-align: center; border-radius: 12px 12px 0 0; }
+    .header h1 { margin: 0; font-size: 32px; font-weight: 700; letter-spacing: -0.5px; }
+    .header p { margin: 8px 0 0 0; opacity: 0.95; font-size: 15px; }
+    .section { padding: 28px; border-bottom: 1px solid #f3f4f6; }
+    .section h2 { margin-top: 0; color: #16a34a; font-size: 22px; font-weight: 600; }
+    .section h3 { color: #374151; margin: 16px 0 12px 0; font-weight: 600; }
+    .card { background: #f0fdf4; padding: 16px; border-radius: 8px; margin: 12px 0; border-left: 4px solid #16a34a; }
+    .card strong { color: #16a34a; }
+    .metric { display: inline-block; background: #dcfce7; color: #166534; padding: 10px 14px; border-radius: 6px; margin: 6px 6px 6px 0; font-size: 13px; font-weight: 500; }
+    .buy { color: #16a34a; font-weight: 600; }
+    .sell { color: #dc2626; font-weight: 600; }
+    .hold { color: #ea8c55; font-weight: 600; }
+    .footer { padding: 20px 28px; background: #f9fafb; text-align: center; color: #9ca3af; font-size: 12px; border-radius: 0 0 12px 12px; }
     ul { margin: 10px 0; padding-left: 20px; }
-    li { margin: 8px 0; }
+    li { margin: 8px 0; color: #374151; }
   </style>
 </head>
 <body>
