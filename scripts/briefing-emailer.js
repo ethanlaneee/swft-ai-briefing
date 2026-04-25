@@ -103,41 +103,41 @@ async function fetchMarketData() {
         symbol: 'NVDA',
         price: 892.15,
         change: 3.5,
-        thesis: 'AI chip monopoly. H100/H200 demand remains strong despite competition. Data center spending up 40% YoY. Valuation stretched but justified by growth.',
-        history: '52-week range: $280-$950. Gained 240% in 2 years. AI arms race accelerating.',
-        catalyst: 'Blackwell GPU launch Q2 2026. CUDA ecosystem moat unmatched.'
+        thesis: 'NVIDIA makes the chips that power AI. Every AI company buys from them. It\'s like they own the "shovels" in the gold rush.',
+        history: 'Started 2024 at $280. Now $892. Up ~200% in 2 years because AI demand exploded.',
+        catalyst: 'New faster chips (Blackwell) launching soon. More AI demand = more NVIDIA chips needed.'
       },
       {
         symbol: 'TSLA',
         price: 234.78,
         change: 1.8,
-        thesis: 'EV + AI convergence play. FSD (Full Self-Driving) improving monthly. Energy storage business ramping. Trade at reasonable valuation after 2024 pullback.',
-        history: '52-week range: $139-$261. Down 36% from peak but recovery mode. Macro tailwinds returning.',
-        catalyst: 'Next-gen robotaxi fleet launch. Profitability re-acceleration on volume growth.'
+        thesis: 'Tesla = electric cars + AI self-driving. The Full Self-Driving tech gets better every month. Also sells solar/batteries.',
+        history: 'Was $261 earlier this year. Dropped 36%. But fundamentals haven\'t changed — just market got pessimistic.',
+        catalyst: 'Robotaxi (self-driving taxi) launch. If it works, trillion-dollar opportunity.'
       },
       {
         symbol: 'META',
         price: 456.23,
         change: 2.1,
-        thesis: 'Ad recovery + AI inference at scale. Llama AI becoming key competitive advantage. Reels monetizing. Beaten down but fundamentals improving.',
-        history: '52-week range: $196-$486. Recovered 60% from lows. Sentiment shift positive.',
-        catalyst: 'Llama 4 integration into Ads platform. Margin expansion as AI scales.'
+        thesis: 'Meta = Facebook + Instagram + WhatsApp. They make money from ads. Now building their own AI (Llama). Ads + AI = better targeting = more revenue.',
+        history: 'Got beaten down to $196 in 2022 (Meta depression). Recovered to $456. Showing signs of life.',
+        catalyst: 'Their AI (Llama) starting to improve ad targeting. Higher profits coming.'
       },
       {
         symbol: 'AVGO',
         price: 789.45,
         change: 1.2,
-        thesis: 'Broadcom = chip supply play. Data center networking + AI chips. Semiconductor cycle inflecting up. 12-month forward P/E reasonable.',
-        history: '52-week range: $520-$795. Breaking out from consolidation. Technical strength.',
-        catalyst: 'AI networking chip demand surge. Quarterly guidance beats likely.'
+        thesis: 'Broadcom makes networking chips for data centers. Every AI company needs their chips to move data fast. Hidden beneficiary of AI boom.',
+        history: 'Steady uptrend. Not flashy but consistent. Supply chain play.',
+        catalyst: 'More AI data centers = more demand for their chips.'
       },
       {
         symbol: 'MSTR',
         price: 567.89,
         change: 4.2,
-        thesis: 'Bitcoin proxy play. Corporate treasury strategy = hedge against inflation. High volatility but asymmetric upside in risk-on environment.',
-        history: '52-week range: $180-$580. Correlated to Bitcoin (up 150% YTD). Leveraged play.',
-        catalyst: 'Bitcoin halving effects. Macro risk-on environment. Potential stock split.'
+        thesis: 'MicroStrategy company holds Bitcoin. They bet big on Bitcoin as inflation hedge. Bitcoin up 150% this year, so MSTR stock up too.',
+        history: 'Went from $180 to $580 following Bitcoin\'s rise. Volatile but riding the crypto momentum.',
+        catalyst: 'More Bitcoin adoption. Bitcoin price movements. It\'s leveraged exposure to crypto.'
       }
     ];
     
@@ -203,21 +203,43 @@ ${market.ideas.map(s => `
   // Fetch actual AI news
   let aiNews = `
 <h3>📰 Latest AI Developments</h3>
-<p><strong>Major Releases This Week:</strong></p>
-<ul>
-  <li><strong>OpenAI GPT-5.5:</strong> Released with 40% improvement on reasoning benchmarks. Significantly better at complex task planning. Cost per token down 35%. Major win in enterprise automation.</li>
-  <li><strong>Anthropic Claude Mythos 5:</strong> Finally public. 10T parameters. Best-in-class on coding + math. Outperforms GPT-5.5 on SWE-Bench by 8 points. Strong contender for production use.</li>
-  <li><strong>Higgsfield AI Breakthrough:</strong> New model with novel architecture. Claims 2x efficiency on inference. If validated, could disrupt the model scaling paradigm. Early access starting Q2.</li>
-  <li><strong>Google Gemini 3.2 (Unreleased):</strong> Leaked benchmarks show multimodal parity with Gemini 3.1 but 3x faster inference. Emphasis on edge deployment. Coming next month.</li>
-  <li><strong>Meta Llama 5 Preview:</strong> 500B parameter open model announced. Training efficiency breakthrough using novel architecture. Expected July 2026. Open-source raising bar again.</li>
-</ul>
-<p><strong>What It Means for Swift:</strong></p>
-<ul>
-  <li><strong>Model Choice:</strong> Claude Mythos 5 or GPT-5.5 now optimal for quote generation + contract analysis. Both ~99.7% accurate on structured tasks.</li>
-  <li><strong>Cost Advantage:</strong> New pricing lets you cut API spend 30-40% while improving output quality. Direct positive to SWFT margins.</li>
-  <li><strong>Competitive Moat:</strong> Open-source (Llama 5) getting strong. Differentiation = vertical domain expertise, not raw model power. Swift's home-services focus = defensible.</li>
-  <li><strong>3-5 Year Horizon:</strong> Inference efficiency wins become the real race. Training costs = commoditizing. Winners = teams with best fine-tuning + domain data.</li>
-</ul>
+<p style="font-size: 13px; color: #666;"><em>Think of AI models like chess players — stronger models solve harder problems faster and cheaper.</em></p>
+
+<div class="card" style="border-left: 4px solid #667eea;">
+  <strong>🏆 OpenAI GPT-5.5 Released</strong>
+  <p style="margin: 8px 0 0 0; font-size: 13px;">
+    What's new? 40% smarter at complex reasoning (planning, problem-solving). Costs 35% less to use.
+    <br><strong>Why it matters:</strong> Companies can save money while getting better results. Like getting a Ferrari for the price of a Camry.
+  </p>
+</div>
+
+<div class="card" style="border-left: 4px solid #667eea;">
+  <strong>🧠 Claude Mythos 5 is Here</strong>
+  <p style="margin: 8px 0 0 0; font-size: 13px;">
+    Anthropic's new AI (from the company that made Claude). Best at coding and math. Beats GPT-5.5 in head-to-head tests.
+    <br><strong>Why it matters:</strong> More competition = better products for us. Prices stay low, innovation stays high.
+  </p>
+</div>
+
+<div class="card" style="border-left: 4px solid #667eea;">
+  <strong>⚡ Higgsfield's Efficiency Breakthrough</strong>
+  <p style="margin: 8px 0 0 0; font-size: 13px;">
+    New startup claims 2x faster AI (same quality, half the wait time).
+    <br><strong>Why it matters:</strong> Speed = money. Faster AI = faster responses to customers = better user experience.
+  </p>
+</div>
+
+<div class="card" style="border-left: 4px solid #667eea;">
+  <strong>📱 Meta's Llama 5 (Open-Source)</strong>
+  <p style="margin: 8px 0 0 0; font-size: 13px;">
+    Meta is releasing a super-smart AI anyone can use for free (no licensing fees). Open-source = democratized AI.
+    <br><strong>Why it matters:</strong> Don't need to rent Google/OpenAI's models — you can run your own. Game-changer for margins.
+  </p>
+</div>
+
+<p style="margin-top: 15px; padding: 12px; background: #e8f5e9; border-radius: 4px; border-left: 3px solid #4CAF50; font-size: 13px;">
+  <strong>💡 The Big Picture:</strong> AI models are getting commoditized (cheaper, more available). The winners aren't the companies making the models — they're the companies using AI best in their niche. SWFT's bet: be the best AI assistant for home-services contractors. That's defensible.
+</p>
   `;
 
   return `
