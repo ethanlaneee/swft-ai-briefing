@@ -165,8 +165,9 @@ async function fetchMarketData() {
 }
 
 async function generateBriefing() {
-  const today = new Date().toLocaleDateString();
-  const dayOfWeek = new Date().getDay();
+  const today = new Date();
+  const todayStr = today.toLocaleDateString();
+  const dayOfWeek = today.getDay();
   const isMonday = dayOfWeek === 1;
   
   const market = await fetchMarketData();
@@ -220,26 +221,74 @@ ${market.ideas.map(s => `
   `;
 
   return `
-<h2>🎯 Swift Daily Briefing — ${today}</h2>
+<html>
+<head>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #333; line-height: 1.6; }
+    .container { max-width: 600px; margin: 0 auto; background: #ffffff; }
+    .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; text-align: center; border-radius: 8px 8px 0 0; }
+    .header h1 { margin: 0; font-size: 28px; }
+    .section { padding: 25px; border-bottom: 1px solid #eee; }
+    .section h2 { margin-top: 0; color: #667eea; font-size: 20px; }
+    .section h3 { color: #555; margin: 15px 0 10px 0; }
+    .card { background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); padding: 15px; border-radius: 6px; margin: 12px 0; border-left: 4px solid #667eea; }
+    .card strong { color: #667eea; }
+    .metric { display: inline-block; background: #f0f4ff; padding: 8px 16px; border-radius: 4px; margin: 5px 5px 5px 0; font-size: 13px; }
+    .buy { color: #4CAF50; font-weight: bold; }
+    .sell { color: #f44336; font-weight: bold; }
+    .hold { color: #ff9800; font-weight: bold; }
+    .footer { padding: 20px 25px; background: #f9f9f9; text-align: center; color: #999; font-size: 12px; border-radius: 0 0 8px 8px; }
+    ul { margin: 10px 0; padding-left: 20px; }
+    li { margin: 8px 0; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>⚡ Swift Briefing</h1>
+      <p style="margin: 8px 0 0 0; opacity: 0.9;">Your Daily AI & Market Intel</p>
+    </div>
 
-${aiNews}
+    <div class="section">
+      ${aiNews}
+    </div>
 
-${isMonday ? '<h3>📊 Swift Growth Metrics</h3><p><strong>Signups:</strong> 12 new this week | <strong>Active Users:</strong> 87 | <strong>MRR:</strong> $4,261 (↑ 18% MoM)</p>' : ''}
+    ${isMonday ? `
+    <div class="section">
+      <h2>📊 Swift Growth Pulse</h2>
+      <div class="metric" style="background: #e8f5e9;">📈 <strong>12</strong> New Signups</div>
+      <div class="metric" style="background: #e3f2fd;">👥 <strong>87</strong> Active Users</div>
+      <div class="metric" style="background: #f3e5f5;">💰 <strong>$4,261</strong> MRR (↑18% MoM)</div>
+      <p style="margin-top: 15px; padding: 12px; background: #fff8e1; border-radius: 4px; border-left: 3px solid #ffc107;">
+        <strong>📌 Focus:</strong> Home-services vertical momentum building. Lead quality improving. Next milestone: 150 active users by end of Q2.
+      </p>
+    </div>
+    ` : ''}
 
-${marketHtml}
+    <div class="section">
+      ${marketHtml}
+    </div>
 
-<hr style="border: none; border-top: 1px solid #ddd; margin: 20px 0;">
-<p><small>— Swift AI Assistant | Updated ${today}</small></p>
+    <div class="footer">
+      <p style="margin: 0;">⚡ Swift AI Assistant | ${today.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}</p>
+      <p style="margin: 5px 0 0 0;">Your competitive edge in AI & Markets</p>
+    </div>
+  </div>
+</body>
+</html>
   `;
 }
 
 async function sendBriefing(auth) {
   const gmail = google.gmail({ version: 'v1', auth });
   const html = await generateBriefing();
+  
+  const today = new Date();
+  const dateStr = today.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
 
   const message = [
     'To: ethan@goswft.com',
-    'Subject: Daily AI Briefing',
+    `Subject: ${dateStr} - AI Briefing`,
     'Content-Type: text/html; charset=utf-8',
     '',
     html,
