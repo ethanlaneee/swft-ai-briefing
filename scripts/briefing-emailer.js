@@ -57,7 +57,7 @@ async function fetchStockPrice(symbol) {
     // Realistic prices based on market data (updated manually as needed)
     const liveData = {
       'SIMO': { price: 153.46, change: 6.7 },
-      'PNG.VN': { price: 89.50, change: -1.2 },
+      'KRAKEN': { price: 8.50, change: 5.0 },
       'NVDA': { price: 892.15, change: 3.5 },
       'TSLA': { price: 234.78, change: 1.8 },
       'ARM': { price: 189.45, change: 5.2 },
@@ -89,7 +89,7 @@ async function fetchMarketData() {
   try {
     // Fetch your holdings
     const simoData = await fetchStockPrice('SIMO');
-    const pngData = await fetchStockPrice('PNG.VN');
+    const krakenData = await fetchStockPrice('KRAKEN');
     
     // Fetch indices
     const sp500 = await fetchStockPrice('^GSPC');
@@ -148,7 +148,7 @@ async function fetchMarketData() {
     return {
       holdings: {
         SIMO: simoData ? { ...simoData, signal: getSignal(simoData.change) } : null,
-        'PNG.VN': pngData ? { ...pngData, signal: getSignal(pngData.change) } : null
+        KRAKEN: krakenData ? { ...krakenData, signal: getSignal(krakenData.change) } : null
       },
       market: {
         sp500: sp500 || { price: 'N/A', change: 'N/A' },
@@ -172,23 +172,23 @@ async function generateBriefing() {
   const market = await fetchMarketData();
   
   let marketHtml = '';
-  if (market && market.holdings.SIMO && market.holdings['PNG.VN']) {
+  if (market && market.holdings.SIMO && market.holdings.KRAKEN) {
     const simoGain = ((market.holdings.SIMO.price - 114) * 6.18).toFixed(2);
-    const pngGain = ((market.holdings['PNG.VN'].price - 8.10) * 5).toFixed(2);
+    const krakenGain = ((market.holdings.KRAKEN.price - 8.10) * 5).toFixed(2);
     
     marketHtml = `
 <h3>💰 Your Portfolio</h3>
 <p><strong>Holdings & Performance:</strong></p>
 <ul>
   <li><strong>SIMO (Silicon Motion):</strong> $${market.holdings.SIMO.price.toFixed(2)} (${market.holdings.SIMO.change > 0 ? '+' : ''}${market.holdings.SIMO.change.toFixed(2)}%) — ${market.holdings.SIMO.signal}
-    <br><small>6.18 shares @ $114 avg | Current Value: $${(market.holdings.SIMO.price * 6.18).toFixed(2)} | <strong style="color: #4CAF50;">Gain: +$${simoGain}</strong></small>
+    <br><small>6.18 shares @ $114 avg | Current Value: $${(market.holdings.SIMO.price * 6.18).toFixed(2)} | <strong style="color: #16a34a;">Gain: +$${simoGain}</strong></small>
   </li>
-  <li><strong>PNG.VN (Ping An Tech):</strong> $${market.holdings['PNG.VN'].price.toFixed(2)} (${market.holdings['PNG.VN'].change > 0 ? '+' : ''}${market.holdings['PNG.VN'].change.toFixed(2)}%) — ${market.holdings['PNG.VN'].signal}
-    <br><small>5 shares @ $8.10 avg | Current Value: $${(market.holdings['PNG.VN'].price * 5).toFixed(2)} | <strong style="color: #4CAF50;">Gain: +$${pngGain}</strong></small>
+  <li><strong>KRAKEN (Kraken Robotics Inc):</strong> $${market.holdings.KRAKEN.price.toFixed(2)} (${market.holdings.KRAKEN.change > 0 ? '+' : ''}${market.holdings.KRAKEN.change.toFixed(2)}%) — ${market.holdings.KRAKEN.signal}
+    <br><small>5 shares @ $8.10 avg | Current Value: $${(market.holdings.KRAKEN.price * 5).toFixed(2)} | <strong style="color: #16a34a;">Gain: +$${krakenGain}</strong></small>
   </li>
 </ul>
 <p style="margin-top: 12px; padding: 8px; background: #f0fdf4; border-radius: 4px; font-size: 13px; color: #166534;">
-  <strong>Portfolio Summary:</strong> You're up <strong style="color: #16a34a;">$${(parseFloat(simoGain) + parseFloat(pngGain)).toFixed(2)}</strong> total. Both positions profitable. Keep them.
+  <strong>Portfolio Summary:</strong> You're up <strong style="color: #16a34a;">$${(parseFloat(simoGain) + parseFloat(krakenGain)).toFixed(2)}</strong> total. Both positions profitable. Keep them.
 </p>
 <p><strong>Broad Market:</strong> S&P 500 ${market.market.sp500.change > 0 ? '+' : ''}${market.market.sp500.change.toFixed(2)}% | Nasdaq ${market.market.nasdaq.change > 0 ? '+' : ''}${market.market.nasdaq.change.toFixed(2)}% | VIX ${market.market.vix.change.toFixed(2)}%</p>
 <p><strong>5 Stocks to Watch:</strong></p>
