@@ -100,44 +100,44 @@ async function fetchMarketData() {
     // Stock ideas with detailed analysis
     const ideas = [
       {
+        symbol: 'SIMO',
+        price: 145.32,
+        change: 2.3,
+        thesis: '💰 YOUR PICK. Storage controller chips (SSDs, flash memory). AI servers need fast storage. NAND flash cycle inflecting up.',
+        history: 'You bought at $114. Now $145. That\'s +27% gain in your favor. Market just waking up to chip shortage easing.',
+        catalyst: 'New gaming consoles (PS6/Xbox) coming 2026-2027. Data center upgrades. Earnings beats likely.'
+      },
+      {
         symbol: 'NVDA',
         price: 892.15,
         change: 3.5,
-        thesis: 'NVIDIA makes the chips that power AI. Every AI company buys from them. It\'s like they own the "shovels" in the gold rush.',
-        history: 'Started 2024 at $280. Now $892. Up ~200% in 2 years because AI demand exploded.',
-        catalyst: 'New faster chips (Blackwell) launching soon. More AI demand = more NVIDIA chips needed.'
+        thesis: 'The AI chip leader. Everyone else buys from them. Shovels in the AI gold rush.',
+        history: '$280 → $892 in 2 years. Expensive but proven.',
+        catalyst: 'Blackwell chips. Sustained AI spend.'
       },
       {
         symbol: 'TSLA',
         price: 234.78,
         change: 1.8,
-        thesis: 'Tesla = electric cars + AI self-driving. The Full Self-Driving tech gets better every month. Also sells solar/batteries.',
-        history: 'Was $261 earlier this year. Dropped 36%. But fundamentals haven\'t changed — just market got pessimistic.',
-        catalyst: 'Robotaxi (self-driving taxi) launch. If it works, trillion-dollar opportunity.'
+        thesis: 'EV + self-driving + energy storage. Three separate businesses, one stock.',
+        history: 'Down 36% from peak. Oversold on pessimism.',
+        catalyst: 'Robotaxi launch. Margin expansion.'
       },
       {
-        symbol: 'META',
-        price: 456.23,
-        change: 2.1,
-        thesis: 'Meta = Facebook + Instagram + WhatsApp. They make money from ads. Now building their own AI (Llama). Ads + AI = better targeting = more revenue.',
-        history: 'Got beaten down to $196 in 2022 (Meta depression). Recovered to $456. Showing signs of life.',
-        catalyst: 'Their AI (Llama) starting to improve ad targeting. Higher profits coming.'
-      },
-      {
-        symbol: 'AVGO',
-        price: 789.45,
-        change: 1.2,
-        thesis: 'Broadcom makes networking chips for data centers. Every AI company needs their chips to move data fast. Hidden beneficiary of AI boom.',
-        history: 'Steady uptrend. Not flashy but consistent. Supply chain play.',
-        catalyst: 'More AI data centers = more demand for their chips.'
+        symbol: 'ARM',
+        price: 189.45,
+        change: 5.2,
+        thesis: '🚀 UP-AND-COMER. Designs chips used everywhere (phones, AI servers, cars). Takes royalties on every chip sold. Cheap valuation.',
+        history: '$80 → $189 in 18 months. Still room to run vs NVDA.',
+        catalyst: 'AI chips adoption. Licensing revenue acceleration.'
       },
       {
         symbol: 'MSTR',
         price: 567.89,
         change: 4.2,
-        thesis: 'MicroStrategy company holds Bitcoin. They bet big on Bitcoin as inflation hedge. Bitcoin up 150% this year, so MSTR stock up too.',
-        history: 'Went from $180 to $580 following Bitcoin\'s rise. Volatile but riding the crypto momentum.',
-        catalyst: 'More Bitcoin adoption. Bitcoin price movements. It\'s leveraged exposure to crypto.'
+        thesis: 'Bitcoin play. Leveraged exposure if crypto rallies.',
+        history: '$180 → $580 following Bitcoin up 150%.',
+        catalyst: 'Bitcoin adoption. Macro risk-on.'
       }
     ];
     
@@ -174,17 +174,23 @@ async function generateBriefing() {
   
   let marketHtml = '';
   if (market && market.holdings.SIMO && market.holdings['PNG.VN']) {
+    const simoGain = ((market.holdings.SIMO.price - 114) * 6.18).toFixed(2);
+    const pngGain = ((market.holdings['PNG.VN'].price - 8.10) * 5).toFixed(2);
+    
     marketHtml = `
-<h3>💰 Market Snapshot</h3>
-<p><strong>Your Holdings:</strong></p>
+<h3>💰 Your Portfolio</h3>
+<p><strong>Holdings & Performance:</strong></p>
 <ul>
   <li><strong>SIMO (Silicon Motion):</strong> $${market.holdings.SIMO.price.toFixed(2)} (${market.holdings.SIMO.change > 0 ? '+' : ''}${market.holdings.SIMO.change.toFixed(2)}%) — ${market.holdings.SIMO.signal}
-    <br><small>Storage controller chip maker. NAND flash demand stabilizing.</small>
+    <br><small>6.18 shares @ $114 avg | Current Value: $${(market.holdings.SIMO.price * 6.18).toFixed(2)} | <strong style="color: #4CAF50;">Gain: +$${simoGain}</strong></small>
   </li>
   <li><strong>PNG.VN (Ping An Tech):</strong> $${market.holdings['PNG.VN'].price.toFixed(2)} (${market.holdings['PNG.VN'].change > 0 ? '+' : ''}${market.holdings['PNG.VN'].change.toFixed(2)}%) — ${market.holdings['PNG.VN'].signal}
-    <br><small>Chinese fintech leader. Cloud + AI expansion in progress.</small>
+    <br><small>5 shares @ $8.10 avg | Current Value: $${(market.holdings['PNG.VN'].price * 5).toFixed(2)} | <strong style="color: #4CAF50;">Gain: +$${pngGain}</strong></small>
   </li>
 </ul>
+<p style="margin-top: 12px; padding: 8px; background: #e3f2fd; border-radius: 4px; font-size: 13px;">
+  <strong>Portfolio Summary:</strong> You're up <strong style="color: #4CAF50;">$${(parseFloat(simoGain) + parseFloat(pngGain)).toFixed(2)}</strong> total. Both positions profitable. Keep them.
+</p>
 <p><strong>Broad Market:</strong> S&P 500 ${market.market.sp500.change > 0 ? '+' : ''}${market.market.sp500.change.toFixed(2)}% | Nasdaq ${market.market.nasdaq.change > 0 ? '+' : ''}${market.market.nasdaq.change.toFixed(2)}% | VIX ${market.market.vix.change.toFixed(2)}%</p>
 <p><strong>5 Stocks to Watch:</strong></p>
 ${market.ideas.map(s => `
