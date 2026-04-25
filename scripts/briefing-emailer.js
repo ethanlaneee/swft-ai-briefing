@@ -32,13 +32,16 @@ async function getAuthClient() {
 
 async function fetchStockPrice(symbol) {
   try {
-    const response = await fetch(`https://query1.finance.yahoo.com/v10/finance/quoteSummary/${symbol}?modules=price`);
+    const response = await fetch(`https://query1.finance.yahoo.com/v7/finance/quote?symbols=${symbol}`);
     const data = await response.json();
-    const price = data.quoteSummary.result[0].price;
-    return {
-      price: price.regularMarketPrice.raw,
-      change: price.regularMarketChangePercent.raw
-    };
+    if (data.quoteResponse && data.quoteResponse.result && data.quoteResponse.result[0]) {
+      const quote = data.quoteResponse.result[0];
+      return {
+        price: quote.regularMarketPrice,
+        change: quote.regularMarketChangePercent
+      };
+    }
+    return null;
   } catch (err) {
     console.error(`Failed to fetch ${symbol}:`, err.message);
     return null;
@@ -105,20 +108,19 @@ async function generateBriefing() {
   const market = await fetchMarketData();
   
   let marketHtml = '';
-  if (market) {
+  if (market && market.holdings.SIMO && market.holdings['PNG.VN']) {
     marketHtml = `
 <h3>💰 Market Snapshot</h3>
 <p><strong>Your Holdings:</strong></p>
 <ul>
-  <li><strong>SIMO:</strong> $${market.holdings.SIMO.price} (${market.holdings.SIMO.change > 0 ? '+' : ''}${market.holdings.SIMO.change}%) — ${market.holdings.SIMO.signal}</li>
-  <li><strong>PNG.VN:</strong> $${market.holdings['PNG.VN'].price} (${market.holdings['PNG.VN'].change > 0 ? '+' : ''}${market.holdings['PNG.VN'].change}%) — ${market.holdings['PNG.VN'].signal}</li>
+  <li><strong>SIMO:</strong> $${market.holdings.SIMO.price.toFixed(2)} (${market.holdings.SIMO.change > 0 ? '+' : ''}${market.holdings.SIMO.change.toFixed(2)}%) — ${market.holdings.SIMO.signal}</li>
+  <li><strong>PNG.VN:</strong> $${market.holdings['PNG.VN'].price.toFixed(2)} (${market.holdings['PNG.VN'].change > 0 ? '+' : ''}${market.holdings['PNG.VN'].change.toFixed(2)}%) — ${market.holdings['PNG.VN'].signal}</li>
 </ul>
-<p><strong>Market:</strong> S&P 500 ${market.market.sp500.change > 0 ? '+' : ''}${market.market.sp500.change}% | Nasdaq ${market.market.nasdaq.change > 0 ? '+' : ''}${market.market.nasdaq.change}% | VIX ${market.market.vix.change}%</p>
-<p><strong>Watch These:</strong></p>
-<ul>
-  ${market.ideas.map(s => `<li><strong>${s.symbol}</strong>: $${s.price.toFixed(2)} (${s.change > 0 ? '+' : ''}${s.change.toFixed(2)}%) — ${s.signal}</li>`).join('')}
-</ul>
+<p><strong>Market:</strong> S&P 500 ${market.market.sp500.change > 0 ? '+' : ''}${market.market.sp500.change.toFixed(2)}% | Nasdaq ${market.market.nasdaq.change > 0 ? '+' : ''}${market.market.nasdaq.change.toFixed(2)}% | VIX ${market.market.vix.change.toFixed(2)}%</p>
+<p><strong>Top Watches:</strong> ${market.ideas.slice(0, 3).map(s => `${s.symbol} ${s.signal}`).join(' | ')}</p>
     `;
+  } else {
+    marketHtml = '<h3>💰 Market Snapshot</h3><p>Market data updating...</p>';
   }
 
   return `
